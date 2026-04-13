@@ -1,23 +1,130 @@
 # codex-skills
 
-Open-source Codex skills for agentic execution workflows.
+Practical Codex skills for execution-heavy agent workflows.
 
-Currently included:
-- `ai-repo-cleanup` — deletion-oriented repository slimming audit
-- `long-run-execution` — keep executing through verified slices without midpoint handoff drift
+> Built for real work: repo cleanup, continuous execution, verification-first progress, and low-noise agent behavior.
 
-## Why this repo
+[中文说明](./README_CN.md) · [Contributing](./CONTRIBUTING.md)
 
-This repository packages a small set of practical Codex skills that work well together:
-- repo cleanup and slimming
-- long-running execution discipline
-- reusable installation and release layout
+## What this repository is
 
-It is organized as **one repository, multiple skills** so each skill can stay independent while sharing:
-- installation flow
-- documentation style
-- versioning
-- examples
+`codex-skills` is a small, focused collection of reusable Codex skills designed for agent workflows that need to actually move work forward.
+
+These skills are not generic prompt snippets. They are structured, reusable operating guides for common execution problems such as:
+- slimming AI-generated repositories without damaging active contracts
+- keeping long tasks moving through verified slices instead of drifting into handoff theater
+- reducing repo pollution from tools and intermediate artifacts
+- making skill behavior stable enough to reuse across repositories
+
+## Who this is for
+
+This repository is for people who use Codex as an execution agent and want:
+- stronger repository hygiene
+- more reliable long-running execution behavior
+- reusable skills instead of rewriting prompts every time
+- execution outputs that are concrete, verified, and low-noise
+
+## Included skills
+
+### `ai-repo-cleanup`
+A deletion-oriented repository slimming skill for AI / agent codebases.
+
+Use it when a repository keeps accumulating:
+- dead code suspicion
+- false-alive tests
+- weak helper/support splits
+- duplicate or low-value support surfaces
+- stale docs/history noise that should not dominate the active repo
+
+What makes it different:
+- focuses on **safe deletion value**, not generic code review
+- produces an **execution package**, not a vague audit report
+- supports **zero-action compression** when no cleanup should happen
+- requires tool artifacts to stay outside the repo by default
+- explicitly forbids GitNexus-style instruction-file pollution such as `AGENTS.md` / `CLAUDE.md`
+
+### `long-run-execution`
+A skill for keeping Codex moving through long tasks without drifting into midpoint summaries or fake handoffs.
+
+Use it when the user wants:
+- uninterrupted execution
+- verification after each slice
+- continued progress until the next real milestone
+- fewer “next agent can continue” style outputs
+
+What makes it different:
+- locks the current slice around target, boundary, and proof
+- pushes verification into the pacing loop
+- treats handoff-as-substitute-for-work as failure
+- keeps continuity short and execution-oriented
+
+## Typical use cases
+
+### Example: repository cleanup
+User says:
+
+```text
+Use ai-repo-cleanup to audit this repo and generate a cleanup list.
+```
+
+Expected outcome:
+- delete-ready and high-probability cleanup items are front-loaded
+- tool outputs stay out of the repo
+- the coding agent can act on the result directly
+
+### Example: long execution session
+User says:
+
+```text
+Keep going until this feature is implemented and verified.
+```
+
+Expected outcome:
+- Codex does not stop at a midpoint summary
+- each slice is verified before moving on
+- continuity reflects actual progress instead of speculative notes
+
+## Design principles
+
+This repository prefers skills that are:
+- **execution-first**
+- **verification-driven**
+- **small in scope, strong in rules**
+- **useful across repositories**
+- **careful about repo hygiene**
+
+Non-goals:
+- building a giant skill framework
+- packaging every personal prompt into a public repo
+- adding heavy setup just to make simple skills look “productized”
+
+## Installation
+
+### Install all bundled skills
+
+```bash
+cd codex-skills
+./scripts/install.sh
+```
+
+### Install one skill only
+
+```bash
+cd codex-skills
+./scripts/install.sh ai-repo-cleanup
+```
+
+### Install to a custom Codex home
+
+```bash
+CODEX_HOME=/path/to/custom/codex ./scripts/install.sh
+```
+
+Default target:
+
+```bash
+$HOME/.codex/skills
+```
 
 ## Repository layout
 
@@ -25,68 +132,49 @@ It is organized as **one repository, multiple skills** so each skill can stay in
 codex-skills/
   README.md
   README_CN.md
+  CONTRIBUTING.md
   LICENSE
   scripts/
     install.sh
   skills/
     ai-repo-cleanup/
+      README.md
       SKILL.md
       references/
       scripts/
     long-run-execution/
+      README.md
       SKILL.md
 ```
 
-## Quick install
-
-Install all bundled skills:
-
-```bash
-cd codex-skills
-./scripts/install.sh
-```
-
-Install only one skill:
-
-```bash
-cd codex-skills
-./scripts/install.sh ai-repo-cleanup
-```
-
-By default this installs into:
-
-```bash
-$HOME/.codex/skills
-```
-
-You can override the destination with `CODEX_HOME`:
-
-```bash
-CODEX_HOME=/path/to/custom/codex ./scripts/install.sh
-```
-
-## Included skills
-
-### `ai-repo-cleanup`
-Use when an AI/agent repository needs a deletion-oriented slimming audit that finds:
-- dead code suspicion
-- false-alive tests
-- weak helper splits
-- redundant support surfaces
-- archive/doc noise that should not dominate the active repo
-
-### `long-run-execution`
-Use when the user wants uninterrupted execution through verified slices and does **not** want midpoint handoff behavior.
-
 ## Development
 
-To update a skill in this repo, edit the files under `skills/<skill-name>/`.
+Edit skills in place under:
 
-To reinstall locally after changes:
+```bash
+skills/<skill-name>/
+```
+
+Reinstall locally after changes:
 
 ```bash
 ./scripts/install.sh
 ```
+
+Test without touching your real Codex home:
+
+```bash
+CODEX_HOME=$PWD/.tmp/codex-home ./scripts/install.sh ai-repo-cleanup
+```
+
+## Roadmap
+
+Possible future additions:
+- more execution-oriented skills from the same workflow family
+- better skill examples and before/after outputs
+- optional release notes for skill behavior changes
+
+The repo will stay intentionally small.
 
 ## License
 
