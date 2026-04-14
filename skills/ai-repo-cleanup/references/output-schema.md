@@ -14,8 +14,11 @@ Every JSON file should include when practical:
 ## Suggested report files
 - `run_manifest.json`
 - `repo_scan_snapshot.json`
-- `test_surface_census.json`
-- `support_split_census.json`
+- `repo_surface.json`
+- `single_consumer_census.json`
+- `symbol_reference_census.json`
+- `duplicate_symbol_census.json`
+- `thin_wrapper_census.json`
 - `symbol_reachability_census.json`
 - `fallback_exception_census.json`
 - `complexity_budget_census.json`
@@ -30,30 +33,56 @@ Every JSON file should include when practical:
 - `artifacts_externalized`
 - `delete_ready_count`
 - `high_probability_count`
-- `later_phase_count`
+- `aggressive_backlog_count`
 - `cleanup_worthy_modules[]`
 
 ### repo_scan_snapshot.json
 - `git_status`
 - `diff_stat`
 - `top_changed_files`
-- `top_test_files`
 - `notes`
 
-### test_surface_census.json
-- `families[]`
-  - `path`
-  - `file_count`
-  - `line_count`
-  - `test_count`
+### repo_surface.json
+- `roles`
+- `ratios`
+- `top_paths_by_role`
+- `classification_notes`
 
-### support_split_census.json
-- `paths[]`
+### single_consumer_census.json
+- `items[]`
   - `path`
+  - `role`
+  - `consumer_count`
+  - `consumers[]`
+  - `signals[]`
+
+### symbol_reference_census.json
+- `items[]`
+  - `symbol`
   - `kind`
-  - `real_consumers`
-  - `test_consumers`
-  - `notes`
+  - `path`
+  - `role`
+  - `internal_refs`
+  - `external_refs`
+  - `consumer_files[]`
+  - `consumer_role_breakdown`
+  - `signals[]`
+
+### duplicate_symbol_census.json
+- `duplicate_groups[]`
+  - `group_id`
+  - `match_kind`
+  - `items[]`
+  - `signals[]`
+
+### thin_wrapper_census.json
+- `items[]`
+  - `path`
+  - `symbol`
+  - `kind`
+  - `target_calls[]`
+  - `statement_count`
+  - `signals[]`
 
 ### symbol_reachability_census.json
 - `symbols[]`

@@ -42,40 +42,45 @@
 
 | Skill | 作用 |
 | --- | --- |
-| `ai-repo-cleanup` | 为 AI / agent 仓库找到真正值得删除或退休的清理项 |
-| `long-run-execution` | 让 Codex 一直执行到下一个真实里程碑，而不是中途停在总结 |
+| `ai-repo-cleanup` | 为 AI / agent 仓库找出 delete-ready、高概率下一步和候选 backlog 清理项，并明确缺失证据 |
+| `long-run-execution` | 让 Codex 持续推进到下一个真实里程碑，而不是滑向总结、handoff 或伪 blocker |
 
 ## 当前包含的 Skill
 
 ### `ai-repo-cleanup`
-一个面向“删除价值”的仓库瘦身 skill，主要用于 AI / agent 代码库。
+一个面向“删除价值”的仓库清理审计 skill，主要用于 AI / agent 代码库，帮助在动手改代码前挑战哪些东西该删、该并回、该收窄或该退休。
 
 最适合处理：
 - 可疑死代码
 - 假活测试
 - 弱 helper / support split
-- 冗余支持层
-- 不该继续压过主仓库的 docs / history 噪音
+- 重复实现或重复意图
+- wrappers、adapters、compat 层和其他支持缝
+- 不该继续压过主仓库的 docs / history 噪音与非核心表面积增长
 
 核心特点：
-- 优先优化 **safe deletion value**，不是泛泛 code review
+- 先尽量展开 candidate discovery，再做 verdict compression
 - 输出是 **execution package**，不是空泛审计报告
+- 对非 ready 项明确给出 **missing proof** 和最快下一步检查
 - 当本轮没有真正可动项时，支持 **zero-action compression**
 - 默认要求工具产物外置
 - 明确禁止 GitNexus 一类工具污染仓库 instruction files，例如 `AGENTS.md` / `CLAUDE.md`
 
 ### `long-run-execution`
-一个用于长流程持续执行的 skill，避免 Codex 在任务中途滑向中途总结或假 handoff。
+一个用于长流程持续执行的 skill，避免 Codex 在任务中途滑向总结、假 handoff、blocker 膨胀，或把本地可发现上下文反过来问用户。
 
 最适合处理：
 - 持续执行
 - 每个 slice 后立即验证
 - 一直推进到下一个真实里程碑
 - 降低“下一个 agent 可以继续”式漂移
+- 审计后应直接修复、而不该停在 issue list 的任务
 
 核心特点：
 - 每个 slice 都锁定 target / boundary / proof
+- 提供明确的 continue / stop 决策梯子
 - 把 verification 变成执行节奏的一部分
+- 对 side issue 做分类后回到主线
 - 把 handoff-as-substitute-for-work 当成失败
 - continuity 保持短、小、贴近现实
 
