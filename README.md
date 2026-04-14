@@ -42,40 +42,45 @@ It focuses on skills that improve real execution behavior, such as:
 
 | Skill | Responsibility |
 | --- | --- |
-| `ai-repo-cleanup` | find delete-ready or high-probability cleanup work in AI / agent repositories |
-| `long-run-execution` | keep Codex executing through verified slices until the next real milestone |
+| `ai-repo-cleanup` | surface delete-ready, high-probability, and backlog cleanup candidates in AI / agent repositories with explicit missing proof |
+| `long-run-execution` | keep Codex executing through verified slices until the next real milestone instead of drifting into summaries, handoffs, or fake blockers |
 
 ## Included Skills
 
 ### `ai-repo-cleanup`
-A deletion-oriented repository slimming skill for AI / agent codebases.
+A deletion-oriented cleanup audit for AI / agent codebases that challenges what should be removed, merged back, narrowed, retired, or archived before edits.
 
 Best for:
 - dead code suspicion
 - false-alive tests
 - weak helper/support splits
-- redundant support surfaces
-- stale docs/history noise that should not dominate the active repo
+- duplicate implementation or duplicate intent
+- wrappers, adapters, compat layers, and other support seams
+- stale docs/history noise and non-core surface growth that should not dominate the active repo
 
 Key characteristics:
-- optimizes for **safe deletion value**, not generic code review
+- maximizes candidate discovery before verdict compression
 - produces an **execution package**, not a vague audit report
+- names the **missing proof** and fastest next check for non-ready candidates
 - supports **zero-action compression** when no cleanup should happen
 - requires tool artifacts to stay outside the repo by default
 - explicitly forbids GitNexus-style instruction-file pollution such as `AGENTS.md` / `CLAUDE.md`
 
 ### `long-run-execution`
-A skill for keeping Codex moving through long tasks without collapsing into midpoint summaries or fake handoffs.
+A skill for keeping Codex moving through long tasks without collapsing into midpoint summaries, fake handoffs, blocker inflation, or user-question loops for locally discoverable context.
 
 Best for:
 - uninterrupted execution
 - verification after each slice
 - progress to the next real milestone
 - reducing “next agent can continue” style drift
+- audit-then-repair tasks that should not stop at issue lists
 
 Key characteristics:
 - locks the current slice around target, boundary, and proof
+- adds an explicit continue / stop decision ladder
 - makes verification part of execution cadence
+- classifies side issues and returns to the active slice
 - treats handoff-as-substitute-for-work as failure
 - keeps continuity short and reality-based
 

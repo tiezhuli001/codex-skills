@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "prompt": "帮我做一次 AI agent 仓库的 cleanup audit，重点看 wrappers、helpers、兼容层和测试支撑文件。不要改代码，直接给我能交给 coding agent 的执行交接包。",
+    "expected": "输出应直接落到 delete-ready now / high-probability next / aggressive candidate backlog / not-a-cleanup-priority / cleanup execution package，并为非 ready 项给出 missing-proof 或最快验证。"
+  },
+  {
+    "id": 2,
+    "prompt": "这个仓库最近被 AI 连续改了很多轮，我怀疑有死代码、重复意图和 support seam 膨胀。请做 repo-scan 审计，但不要把我打回去先跑一大串命令；先用现有证据给我第一版结论。",
+    "expected": "输出应先给第一版审计结论与候选分级，而不是先发大规模命令清单；要体现 runtime/producer 证据优先与最小 missing proof。"
+  },
+  {
+    "id": 3,
+    "prompt": "请看一个 AI runtime 仓库：tests 和 docs 长得很快，但我不想因为体量大就误删护栏。帮我给出本轮 cleanup 候选，特别标出哪些是 false positive 风险。",
+    "expected": "输出应把体量信号当作排序而不是删除理由，并明确 not-a-cleanup-priority / false positive 风险，避免把契约测试支撑和真实边界层误判成垃圾。"
+  },
+  {
+    "id": 4,
+    "prompt": "这个仓库不大，但 AI 连续生成痕迹很重：helpers、compat、legacy 命名很多，文件不多却很可疑。请做一次 cleanup audit，不要因为仓库小就放松删除候选发现。",
+    "expected": "输出应说明仓库小不等于无需 cleanup audit；仍要给出 delete-ready now / high-probability next / aggressive candidate backlog，并保持 runtime/producer 证据优先。"
+  },
+  {
+    "id": 5,
+    "prompt": "我现在只要 branch-scan，不要 repo-scan。请审计当前分支相对 merge base 的 cleanup 候选，优先看这轮新增的 wrappers、support seams 和兼容层。",
+    "expected": "输出应明确进入 branch-scan，只聚焦当前分支变化，先给 changed modules 的 cleanup actions，再给少量 backlog，不要扩成全仓 repo-scan。"
+  }
+]

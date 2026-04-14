@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "把这个 repo 的 failing tests 修到通过，别给我计划，直接做，做到跑通为止。",
+    "expected": "先锁定最小可执行 slice，修一块验一块，不在中途输出 handoff 或下一位 agent 建议。"
+  },
+  {
+    "id": 2,
+    "prompt": "检查实现和 docs 有没有漂移，有的话直接修，不要只列问题。",
+    "expected": "先读基线 docs，再产出 issue list，并继续进入安全修复和验证，而不是停在审计结论。"
+  },
+  {
+    "id": 3,
+    "prompt": "继续把这个功能做完，遇到旁支问题记下来，但别跑偏。",
+    "expected": "记录非阻塞 side issue，但维持当前 frontier，不把额外发现当成停止或扩边理由。"
+  }
+]
