@@ -201,6 +201,10 @@ Possible future additions:
 
 The repository will stay intentionally small.
 
+## 🏠 Commuity （Acknowledge）
+
+First shared on [LINUX DO](https://linux.do/) — where possible begins.
+
 ## License
 
 MIT
