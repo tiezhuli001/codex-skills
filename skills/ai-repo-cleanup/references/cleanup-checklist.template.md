@@ -9,6 +9,7 @@
 - **Final checklist path:**
 - **In-repo output requested?:** `yes | no`
 - **Tool artifacts externalized?:** `yes | no`
+- **Single live checklist for this wave?:** `yes | no`
 
 ## Audit Context
 - **Audit scope for this run:**
@@ -16,81 +17,108 @@
 - **Important missing or downgraded tools:**
 - **What this audit intentionally did not prove:**
 
-## Execution Intent
-- **Execution outcome for this round:** `actionable-cleanup | zero-action-round`
-- **Execution goal for the coding agent:** remove, retire, merge back, or archive the items below in priority order.
-- **How to use this package:** start at `Execution Ladder` Phase 1 and keep going until every `delete-ready` and `high-probability` item is resolved or blocked by failed proof, failed verification, or evidence conflict.
-- **Do not reopen broad analysis unless:** proof fails, verification fails, or runtime evidence contradicts the checklist.
-
-## Repository Goal and Module Map
+## Repository Goal And Active Spine
 - **Repository goal / project target:**
 - **Runtime / execution model:**
-- **Core-path modules:**
-- **Supporting modules:**
-- **Edge modules:**
+- **Active spine:**
+- **Audit ordering for this round:**
 - **Current growth hotspots:**
 
-## Delete-ready Now
-| Item | Path(s) | Planned action | Why delete-ready | Minimum verification | Expected slimming value | Module sheet |
-|---|---|---|---|---|---|---|
-| `{{DELETE_READY_ITEM}}` | `...` | `delete | retire tests | merge back | archive` | `...` | `...` | `low | medium | high` | `...` |
+## Delete-Ready Now
+For each item include:
+- `path-or-group`
+- `candidate-type`
+- `key-evidence`
+- `surviving-contract`
+- `missing-proof`
+- `fastest-next-check`
+- `suggested-action`
 
 ## High-Probability Next
-| Item | Path(s) | Planned action after proof | Why likely removable | Missing proof | Fastest proof to gather | Minimum verification after change | Module sheet |
-|---|---|---|---|---|---|---|---|
-| `{{HIGH_PROBABILITY_ITEM}}` | `...` | `...` | `...` | `...` | `...` | `...` | `...` |
+For each item include:
+- `path-or-group`
+- `candidate-type`
+- `key-evidence`
+- `surviving-contract`
+- `missing-proof`
+- `fastest-next-check`
+- `suggested-action`
 
-## Later-phase Only
-| Item | Path(s) | Why later-phase | What must happen first |
+## Aggressive Candidate Backlog
+For each item include:
+- `path-or-group`
+- `candidate-type`
+- `key-evidence`
+- `surviving-contract`
+- `missing-proof`
+- `fastest-next-check`
+- `suggested-action`
+
+## Expected Residuals
+| Path or group | Why it remains after this round | What unlocks it later |
+|---|---|---|
+| `{{EXPECTED_RESIDUAL}}` | `...` | `...` |
+
+## Not-a-Cleanup-Priority
+| Path or group | Why it stays out of scope this round |
+|---|---|
+| `{{OUT_OF_SCOPE_ITEM}}` | `...` |
+
+## Large Cluster Supplements
+Use when a grouped candidate spans `3+` files, `1000+` lines, or multiple owners.
+
+### Cluster Maturity
+- **Cluster:** `{{CLUSTER_NAME}}`
+- **Cluster size:**
+- **Current-round maturity:** `ready-first-batch | proof-first | mapping-first | hold`
+- **First-batch exact targets:**
+- **Expected immediate deletions:**
+- **Proof blockers:**
+
+### Owner Map
+| Suite or file | Behavior owner | Overlap to remove first |
+|---|---|---|
+| `{{OWNER_ROW}}` | `...` | `...` |
+
+### Deletion List
+| Order | Target | Action | Why first |
 |---|---|---|---|
-| `{{LATER_PHASE_ITEM}}` | `...` | `...` | `...` |
+| `1` | `{{DELETION_TARGET}}` | `delete | move | narrow assertions | archive` | `...` |
 
-## Zero-Action Round Summary
-Use this section only when both action tables are empty.
-- **Current round conclusion:** no new delete-ready or high-probability cleanup slices were found.
-- **Only later-phase candidate worth keeping alive:**
-- **Do Not Misclassify This Round:**
-  -
-- **Why no module sheets were generated:** no current-round action required.
+### Execution Checklist
+| Step | Action | Verification | Stop condition |
+|---|---|---|---|
+| `1` | `...` | `...` | `...` |
 
-## Execution Brief
-### Start Here
--
+## Cleanup Execution Package
 
-### Current Mandatory Work
--
+### Scope
+- **Execution outcome for this round:** `actionable-cleanup | zero-action-round`
+- **Execution goal for the coding agent:**
+- **How to use this package:** execute in order; do not reopen broad analysis unless proof fails, verification fails, or evidence conflicts.
 
-### Do Not Waste Time On
--
+### Ordered Actions
+1. `{{ORDERED_ACTION_1}}`
+2. `{{ORDERED_ACTION_2}}`
+3. `{{ORDERED_ACTION_3}}`
 
-### Stop Only If
+### Verification Matrix
+| Check class | Purpose | Fastest command or proof | Pass signal |
+|---|---|---|---|
+| `owner tests` | `...` | `...` | `...` |
+| `protected regression` | `...` | `...` | `...` |
+| `execution-path regression` | `...` | `...` | `...` |
+| `end-to-end smoke` | `...` | `...` | `...` |
+| `docs and hygiene checks` | `...` | `...` | `...` |
+
+### Churn Expectation
+- **Expected code delta:**
+- **Expected test delta:**
+- **Expected docs delta:**
+- **Expected net line direction:** `down | flat | temporarily up`
+
+### Stop Conditions
 - proof fails
 - verification fails
 - runtime evidence conflicts with the checklist
-
-## Execution Ladder
-### Phase 1 — Delete-ready now
-- **Target:**
-- **Primary files:**
-- **Minimum verification set:**
-- **Completion signal:**
-
-### Phase 2 — High-probability after one proof
-- **Target:**
-- **Proof to gather first:**
-- **Primary files:**
-- **Minimum verification set:**
-- **Completion signal:**
-
-### Phase 3 — Later-phase only
-- Keep this phase short.
-
-## Do Not Misclassify This Round
-List only the non-action items that the coding agent must consciously avoid this round.
--
-
-## Module Coverage Map
-Use only when module sheets actually exist this round.
-| Module | Included this round? | Why included or excluded | Module sheet path | Execution phase role |
-|---|---|---|---|---|
-| `{{MODULE_NAME}}` | `yes | no` | `...` | `...` | `delete-ready | high-probability | hold-boundary | excluded` |
+- grouped candidate maturity is lower than expected after first proof

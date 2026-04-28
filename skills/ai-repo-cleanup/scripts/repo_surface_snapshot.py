@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import datetime, timezone
 import re
 import subprocess
 from collections import defaultdict
@@ -296,6 +297,10 @@ def main() -> int:
     test_non_empty = roles["test-like"]["non_empty_lines"]
     docs_non_empty = roles["docs-like"]["non_empty_lines"]
     payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "repo_root": str(root),
+        "tool_name": "repo_surface_snapshot",
+        "schema_version": 1,
         "summary": {
             "scanned_files": scanned_files,
             "classified_files": scanned_files - roles["unknown-or-mixed"]["files"],

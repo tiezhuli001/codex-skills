@@ -1,33 +1,27 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
-import shutil
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from census_utils import externalize_paths, resolve_repo_root
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Move repo-local audit artifacts into the run_root artifacts directory.")
+    parser.add_argument("run_root", help="Run root created by prepare_tmp_workspace.py")
+    parser.add_argument("paths", nargs="+", help="Repo-relative paths to move into run_root/artifacts")
+    parser.add_argument("--repo-root", default=None, help="Target repository root. Defaults to run_manifest repo_root, then cwd.")
+    return parser.parse_args()
+
 
 def main() -> int:
-    if len(sys.argv) < 3:
-        print("usage: externalize_repo_artifacts.py <run_root> <path> [<path> ...]", file=sys.stderr)
-        return 2
-    run_root = Path(sys.argv[1])
-    repo_root = Path.cwd()
-    artifacts_dir = run_root / "artifacts"
-    moved = []
-    for raw in sys.argv[2:]:
-        src = repo_root / raw
-        if not src.exists():
-            continue
-        dst = artifacts_dir / src.name
-        if dst.exists():
-            if dst.is_dir():
-                shutil.rmtree(dst)
-            else:
-                dst.unlink()
-        shutil.move(str(src), str(dst))
-        moved.append({"from": str(src.relative_to(repo_root)), "to": str(dst)})
+    args = parse_args()
+    run_root = Path(args.run_root).expanduser().resolve()
+    repo_root = resolve_repo_root(run_root, args.repo_root)
+    moved = externalize_paths(repo_root, run_root, args.paths)
     obj = {
         "run_id": run_root.name,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -37,6 +31,7 @@ def main() -> int:
         "moved": moved,
     }
     out = run_root / "reports" / "artifact_externalization.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return 0
 
