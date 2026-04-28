@@ -1,6 +1,6 @@
 ---
 name: ai-repo-cleanup
-description: Use when an AI or agent repository needs a deletion-oriented cleanup audit before edits because of dead code suspicion, duplicate intent, weak reachability, wrappers, helpers, adapters, support seams, compat or legacy layers, branch cleanup candidates, or non-core surface growth
+description: Use when an AI or agent repository shows dead code suspicion, duplicate intent, compatibility residue, wrapper sprawl, helper drift, or test and docs growth and needs a deletion-oriented cleanup audit before edits.
 ---
 
 # AI Repo Cleanup
@@ -9,14 +9,14 @@ description: Use when an AI or agent repository needs a deletion-oriented cleanu
 
 Audit a repository for **cleanup candidates worth proving or removing** before edits.
 
-This skill is aggressive in candidate discovery and conservative only in final deletion claims. It should surface what may be removed, merged back, narrowed, retired, or archived, then name the missing proof clearly enough for a coding agent to continue.
+This skill is aggressive in candidate discovery and conservative in final deletion verdicts. It should surface what may be removed, merged back, narrowed, retired, or archived, then name the missing proof clearly enough for a coding agent to continue.
 
 Default package:
 - one repo-level execution package
 - module execution sheets only for candidates with immediate execution value
 
 The package must answer:
-**what should be cleaned now, what should be challenged next, and what proof is missing?**
+**what should be cleaned now, what should be challenged next, what proof is missing, and what verification keeps the main chain safe?**
 
 ## When to Use
 
@@ -45,6 +45,14 @@ Do not use when:
 10. **Repository surface size guides audit ordering; it does not justify deletion by itself.**
 11. **Do not default to sending the user a large command checklist before producing the first audit package.**
 12. **Start with the strongest available in-context evidence, then name only the minimal missing proof.**
+13. **When code/test cleanup and doc cleanup are both actionable, front-load code/test cleanup unless docs are the only delete-ready slice or are blocking execution.**
+14. **Large grouped candidates must declare current-round maturity and immediate execution value.**
+15. **Every cleanup execution package must carry a verification matrix, churn expectation, and expected residuals.**
+16. **If in-repo output is requested, keep exactly one live checklist document per cleanup wave.**
+17. **Persisted repo docs must use repo-relative paths only.**
+18. **High-Probability Next should stay intentionally short and represent one focused execution wave.**
+19. **Large grouped candidates must include candidate files, first-batch exact targets, and candidate-level verification.**
+20. **Each wave should compare itself with the previous wave for the same repo and report stability or drift.**
 
 ## Candidate Policy
 
@@ -59,6 +67,11 @@ Good candidate signals include:
 - non-core surface that grew faster than the active spine
 - helper, adapter, builder, fixture, or utility layers with weak ownership
 - paths kept alive only by narrow or historical callers
+
+Actionability matters too:
+- duplicate helper pairs with a plausible canonical owner should outrank broader mapping work
+- strong merge-back candidates with caller / constructor / registration proof should outrank diffuse backlog items
+- large test families should be compressed into the shortest execution wave a coding agent can actually run
 
 A candidate may be listed even when proof is incomplete, but the missing proof must be named.
 
@@ -86,18 +99,57 @@ For each item in `delete-ready now`, `high-probability next`, or `aggressive can
 
 Keep entries compact, but do not omit `surviving-contract` or `missing-proof`.
 
+## Grouped Candidate Maturity
+
+If a candidate spans `3+` files, multiple owners, or roughly `1000+` lines, include these extra fields:
+- `cluster-size`
+- `current-round-maturity`
+  - `ready-first-batch`
+  - `proof-first`
+  - `mapping-first`
+  - `hold`
+- `first-batch-exact-targets`
+- `expected-immediate-deletions`
+- `proof-blockers`
+- `candidate-files`
+- `candidate-verification`
+
+This is required for large test families, transport/finalization seams, delivery/channel bundles, session/context clusters, or similar grouped cleanup targets.
+
+## Large Test Family Rule
+
+For any test cluster that is broad enough to risk owner drift, the audit must output a three-stage package:
+
+1. `owner map`
+   - which suite owns which behavior
+2. `deletion list`
+   - exact first-batch assertions, files, or blocks to remove or move
+3. `execution checklist`
+   - the order to delete, verify, and stop
+
+Do not send a large test family straight from broad suspicion into execution. The coding agent should already know the owner boundary before deleting.
+
+Default threshold:
+- `3+` files with overlapping assertions, or
+- `1200+` total lines, or
+- one family still mixes acceptance, contract, rendering, transport, and loop ownership in the same wave
+
 ## Output Classes
 
-Compress findings into four useful classes:
+Compress findings into five useful classes:
 - `delete-ready now`
 - `high-probability next`
 - `aggressive candidate backlog`
+- `expected residuals`
 - `not-a-cleanup-priority`
 
 Rules:
 - `aggressive candidate backlog` is required when plausible cleanup targets exist but proof is not yet sufficient
+- `expected residuals` is required whenever the current round will intentionally leave known hits behind
 - do not bury meaningful candidates inside generic `later-phase` prose
 - if the round found one strong target and several weaker ones, list them all with different evidence grades
+- keep `high-probability next` intentionally short; default target is `5-8` items
+- prefer the most executable items first, even when broader families have larger raw scores
 
 ## Required Final Output Shape
 
@@ -114,17 +166,79 @@ Use this shape unless the user requested another exact format:
 ### Aggressive Candidate Backlog
 - items with the full candidate entry schema
 
+### Expected Residuals
+- `path-or-group`
+- `why it remains`
+- `what proof or design unlocks it later`
+
 ### Not-a-Cleanup-Priority
-- path or group
-- why it stays out of scope this round
+- `path-or-group`
+- `why it stays out of scope this round`
 
 ### Cleanup Execution Package
 - `scope`
 - `ordered-actions`
-- `verification`
+- `verification-matrix`
+- `churn-expectation`
+- `expected-residuals`
 - `stop-conditions`
+- `current-wave action board`
+- `wave stability`
 
 The first useful output should already use this structure. Do not postpone it behind a broad command dump.
+
+`current-wave action board` should make the next coding wave obvious:
+- exact candidate files when known
+- first-batch exact targets
+- preferred canonical owner for duplicate helpers when known
+- candidate-level verification proofs
+
+`wave stability` should compare the current wave with the previous wave for the same repo:
+- new candidates
+- promoted candidates
+- resolved candidates
+- persistent candidates
+
+## Verification Matrix
+
+Every cleanup execution package must carry a verification matrix. Use repo-native names when they already exist.
+
+Always specify the smallest relevant set from:
+- `owner tests`
+- `protected regression`
+- `execution-path regression`
+- `end-to-end smoke`
+- `docs and hygiene checks`
+
+For each entry, include:
+- `purpose`
+- `fastest command or proof`
+- `pass signal`
+
+If the repository has a real request chain, agent loop, or delivery path, `end-to-end smoke` should be present unless the audit explicitly proves that the current round cannot affect it.
+
+For the current-wave action board, also include per-candidate verification whenever possible:
+- `owner tests`
+- `protected regression`
+- `execution-path regression` for active runtime seams
+
+## Churn Expectation
+
+Every cleanup execution package must estimate the likely shape of the wave:
+- `expected-code-delta`
+- `expected-test-delta`
+- `expected-docs-delta`
+- `expected-net-line-direction`
+
+Approximate ranges are enough. The point is to prevent false expectations about a wave that deletes code but temporarily grows docs or checklists.
+
+## Single-Live-Checklist Rule
+
+When the user wants in-repo output:
+- keep one live cleanup checklist document for the wave
+- keep owner maps, deletion lists, and execution checklists as sections or appendices of that live doc unless the user explicitly wants separate files
+- never leave multiple active backlog pointers alive at once
+- once a wave is closed, compress its execution history into one short archive summary or durable changelog note
 
 ## Execution Framing
 
@@ -164,6 +278,7 @@ Do not treat these as deletion wins without stronger proof:
 - Treat generated instruction files as pollution unless explicitly requested. This includes `AGENTS.md`, `CLAUDE.md`, `TOOLS.md`, `SOUL.md`, and `BOOTSTRAP.md`.
 - If any tool creates instruction-file pollution, delete or externalize it before finishing.
 - Final audit documents default to `/tmp`; only persist inside `docs/` when the user requests in-repo output.
+- Persisted repo docs must not use machine-local absolute paths.
 
 ## Environment and Portability
 
@@ -219,6 +334,8 @@ Tools may help discover:
 
 Read `references/output-schema.md` for stable report shapes.
 Read `references/candidate-census-design.md` when extending census scripts.
+Read `references/cleanup-checklist.template.md` when persisting one in-repo wave checklist.
+Read `references/module-cleanup-checklist.template.md` when generating module execution sheets.
 
 ## Modes
 
@@ -283,9 +400,18 @@ Compress findings into:
 - `delete-ready now`
 - `high-probability next`
 - `aggressive candidate backlog`
+- `expected residuals`
 - `not-a-cleanup-priority`
 
 Do not let hold material dominate the output.
+
+### Phase 5 — Execution Packaging
+Produce one cleanup execution package that already answers:
+- what to do first
+- which grouped candidates are mature enough for current execution
+- what exact first-batch deletions are realistic this round
+- what verification protects the main chain
+- what residual hits are intentionally left behind
 
 ## Output Requirement
 
@@ -294,5 +420,8 @@ Always finish with a cleanup execution package.
 The output must:
 - front-load `delete-ready now` and `high-probability next`
 - keep an explicit `aggressive candidate backlog`
+- keep an explicit `expected residuals`
 - state the missing proof for each non-ready candidate
+- state grouped-candidate maturity for large clusters
+- include a verification matrix and churn expectation
 - help a coding agent continue cleanup without reopening broad analysis

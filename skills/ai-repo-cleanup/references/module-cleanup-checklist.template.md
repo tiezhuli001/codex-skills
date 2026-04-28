@@ -7,47 +7,40 @@
 - **Role in repository:** `core | supporting | edge`
 - **Why this module is in the current round:**
 - **Related repo checklist path:**
-- **Execution phase role:** `delete-ready | high-probability | later-phase`
-
-## Execution Intent
-- **What the coding agent should finish in this module:**
-- **Expected slimming action:** `delete | retire tests | merge back | archive | narrow assertions`
-- **What proof is still required before specific edits:**
-- **When to stop and escalate instead of continuing:** `failed proof | failed verification | evidence conflict only`
+- **Execution phase role:** `delete-ready | high-probability | backlog-proof`
 
 ## Decision Summary
-- **Current best classification:** `delete-ready | high-probability | later-phase`
+- **Current best classification:** `delete-ready | high-probability | backlog-proof | hold`
+- **Current-round maturity:** `ready-first-batch | proof-first | mapping-first | hold`
 - **Why this module is worth touching now:**
 - **What should survive even if slimming proceeds:**
 - **What should not be touched in this round:**
-- **Auto-advance target after this module:**
 
 ## Per-File Execution Order
-| Order | File / cluster | Planned action | Why now | Required proof before edit | Minimum verification after edit | Stop allowed after this step? |
-|---|---|---|---|---|---|---|
-| `1` | `{{FILE_OR_CLUSTER}}` | `delete | retire tests | merge back | archive | narrow assertions` | `...` | `...` | `...` | `no | yes` |
+| Order | File or cluster | Planned action | Why now | Required proof before edit | Minimum verification after edit |
+|---|---|---|---|---|---|
+| `1` | `{{FILE_OR_CLUSTER}}` | `delete | retire tests | merge back | archive | narrow assertions` | `...` | `...` | `...` |
 
-## Delete-ready or Retire-ready Slices
-### Slice: `{{SLICE_NAME}}`
-- **State:** `delete-ready | retire-ready | high-probability | later-phase`
-- **Target path(s):**
-  -
-- **Planned action:** `delete | retire tests | merge back | archive | narrow assertions`
-- **Why this action is justified now:**
-  -
-- **Missing proof before edit:**
-  -
-- **Minimum verification set:**
-  -
-- **Expected slimming value:** `low | medium | high`
+## First-Batch Exact Targets
+- `{{TARGET_1}}`
+- `{{TARGET_2}}`
 
-## Verification Baseline
-- **Tests / checks to preserve:**
-- **Runtime behavior that must not drift:**
-- **Contracts / invariants to lock first:**
+## Expected Immediate Deletions
+- **Code or test deletion range:**
+- **Docs deletion range:**
+- **Net line expectation:** `down | flat | temporarily up`
 
-## Module Execution State
-- **Execution state:** `planned | in_progress | completed | blocked`
-- **Current role in repo ladder:** `delete-ready | high-probability | later-phase`
-- **May the coding agent stop after this module?** `yes | no`
-- **If no, auto-advance to:**
+## Verification Matrix
+| Check class | Purpose | Fastest command or proof | Pass signal |
+|---|---|---|---|
+| `owner tests` | `...` | `...` | `...` |
+| `protected regression` | `...` | `...` | `...` |
+| `execution-path regression` | `...` | `...` | `...` |
+| `end-to-end smoke` | `...` | `...` | `...` |
+| `docs and hygiene checks` | `...` | `...` | `...` |
+
+## Stop Conditions
+- proof fails
+- verification fails
+- runtime evidence conflicts with the checklist
+- owner boundary remains unclear after the named first proof

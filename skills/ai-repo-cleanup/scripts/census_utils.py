@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import ast
+import json
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -116,3 +118,42 @@ def name_tokens(tree: ast.AST) -> list[str]:
         elif isinstance(node, ast.Attribute):
             names.append(node.attr)
     return names
+
+
+def read_run_manifest(run_root: Path) -> dict:
+    manifest = run_root / "reports" / "run_manifest.json"
+    if not manifest.exists():
+        return {}
+    try:
+        return json.loads(manifest.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def resolve_repo_root(run_root: Path, explicit_repo_root: str | None = None) -> Path:
+    if explicit_repo_root:
+        return Path(explicit_repo_root).expanduser().resolve()
+    payload = read_run_manifest(run_root)
+    repo_root = payload.get("repo_root")
+    if isinstance(repo_root, str) and repo_root.strip():
+        return Path(repo_root).expanduser().resolve()
+    return Path.cwd().resolve()
+
+
+def externalize_paths(repo_root: Path, run_root: Path, relative_paths: list[str]) -> list[dict[str, str]]:
+    artifacts_dir = run_root / "artifacts"
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    moved: list[dict[str, str]] = []
+    for raw in relative_paths:
+        src = repo_root / raw
+        if not src.exists():
+            continue
+        dst = artifacts_dir / src.name
+        if dst.exists():
+            if dst.is_dir():
+                shutil.rmtree(dst)
+            else:
+                dst.unlink()
+        shutil.move(str(src), str(dst))
+        moved.append({"from": str(src.relative_to(repo_root)), "to": str(dst)})
+    return moved

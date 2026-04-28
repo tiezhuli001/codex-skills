@@ -33,7 +33,9 @@ It pushes the agent toward:
 ```text
 long-run-execution/
   SKILL.md
+  execution-templates.md
   long-run-review-template.md
+  pressure-corpus.md
   test-prompts.json
 ```
 

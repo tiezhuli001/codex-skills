@@ -13,5 +13,25 @@
     "id": 3,
     "prompt": "继续把这个功能做完，遇到旁支问题记下来，但别跑偏。",
     "expected": "记录非阻塞 side issue，但维持当前 frontier，不把额外发现当成停止或扩边理由。"
+  },
+  {
+    "id": 4,
+    "prompt": "这次要把四个验收项都做完再停：代码改动、文档同步、回归测试、真实 smoke。",
+    "expected": "先抽出 completion ledger，再按项关闭；不在仍有 open item 时宣布结束。"
+  },
+  {
+    "id": 5,
+    "prompt": "本地验证已经完成，但外部回调 15 分钟没有信号。重试两次后给我进度。",
+    "expected": "给出 blocker packet：已完成、当前阻塞、证据、已尝试动作、解阻后的下一步。"
+  },
+  {
+    "id": 6,
+    "prompt": "这个长任务可以用 subagent。两个 subagent 的验证结果一过一挂，你来收尾。",
+    "expected": "主线程拥有最终 merge 和 fallback proof；不会把子代理结果直接当成整任务完成。"
+  },
+  {
+    "id": 7,
+    "prompt": "刚才在旧端口上的 smoke 通过了，但现在服务、数据源和 artifact 路径都变了，继续往下做。",
+    "expected": "识别 proof context 已变化，旧 proof 失效，先重跑受影响验证再继续。"
   }
 ]

@@ -77,6 +77,10 @@ class RepoSurfaceSnapshotScriptTests(unittest.TestCase):
             payload = json.loads(out.read_text(encoding="utf-8"))
 
         roles = payload["roles"]
+        self.assertEqual(Path(payload["repo_root"]).resolve(), root.resolve())
+        self.assertEqual(payload["tool_name"], "repo_surface_snapshot")
+        self.assertEqual(payload["schema_version"], 1)
+        self.assertIn("generated_at", payload)
         self.assertEqual(payload["summary"]["scanned_files"], 4)
         self.assertEqual(roles["production-like"]["files"], 1)
         self.assertEqual(roles["test-like"]["files"], 1)
